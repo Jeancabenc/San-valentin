@@ -7,579 +7,333 @@
 
   <style>
     :root{
-      /* inspiración “cute valentine” */
       --pink-1:#ffe5ef;
       --pink-2:#ffd1e1;
-      --pink-3:#ffb7d0;
       --red-1:#ff4d6d;
       --red-2:#e73657;
-      --cream:#fff6fb;
       --ink:#2a1d2a;
       --muted:#6b4a6b;
-
       --card:#ffffffcc;
       --shadow: 0 18px 60px rgba(36,12,36,.20);
-
       --yes:#2ee59d;
       --yes2:#18c985;
-
       --no:#ff6b86;
       --no2:#ff4d6d;
-
       --btnText:#1c0d1c;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
-
     body{
       margin:0;
       min-height:100vh;
       display:grid;
       place-items:center;
-      color:var(--ink);
       font-family: ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      overflow:hidden;
       background:
-        radial-gradient(1200px 600px at 15% 10%, rgba(255,77,109,.22), transparent 60%),
-        radial-gradient(900px 520px at 90% 30%, rgba(255,183,208,.75), transparent 58%),
+        radial-gradient(900px 500px at 10% 10%, rgba(255,77,109,.25), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(255,183,208,.8), transparent 60%),
         linear-gradient(180deg, var(--pink-1), var(--pink-2));
-      position:relative;
     }
 
-    /* corazones flotando en el fondo (sin imágenes externas) */
-    .bg-hearts{
-      position:fixed;
-      inset:-40px;
-      pointer-events:none;
-      opacity:.75;
-      filter: blur(.2px);
-      background:
-        radial-gradient(circle at 10% 20%, rgba(255,77,109,.16) 0 18px, transparent 19px),
-        radial-gradient(circle at 32% 55%, rgba(255,77,109,.12) 0 14px, transparent 15px),
-        radial-gradient(circle at 70% 30%, rgba(255,77,109,.12) 0 16px, transparent 17px),
-        radial-gradient(circle at 85% 70%, rgba(255,77,109,.10) 0 20px, transparent 21px),
-        radial-gradient(circle at 15% 85%, rgba(255,77,109,.10) 0 15px, transparent 16px);
-      transform: rotate(-2deg);
-    }
-
-    .wrap{
-      width:min(860px, 92vw);
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-      align-items:stretch;
-    }
-
-    /* layout “una tarjeta central” como las inspiraciones */
     .card{
-      background: var(--card);
-      border: 2px solid rgba(255,77,109,.18);
-      border-radius: 26px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-      position:relative;
-      overflow:hidden;
+      width:min(860px,92vw);
+      background:var(--card);
+      border-radius:26px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      border:2px solid rgba(255,77,109,.18);
     }
 
     .topbar{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:12px;
+      align-items:center;
       margin-bottom:10px;
     }
 
     .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
       padding:8px 12px;
       border-radius:999px;
-      border: 2px dashed rgba(255,77,109,.35);
-      background: rgba(255,255,255,.55);
-      color: var(--muted);
+      border:2px dashed rgba(255,77,109,.35);
       font-weight:800;
-      font-size: 13px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.06);
-    }
-
-    .mini-hearts{
-      display:flex;
-      gap:6px;
-      opacity:.9;
-      user-select:none;
-    }
-    .mini-hearts span{
-      font-size:16px;
-      transform: translateY(1px);
-      filter: drop-shadow(0 10px 18px rgba(255,77,109,.18));
+      font-size:13px;
+      background:#fff8fc;
+      color:var(--muted);
     }
 
     h1{
-      margin: 6px 0 6px;
       text-align:center;
-      font-size: clamp(28px, 5vw, 44px);
-      letter-spacing: .2px;
-      text-transform:none;
-      text-shadow: 0 10px 24px rgba(255,77,109,.14);
+      margin:8px 0 6px;
+      font-size:clamp(28px,5vw,44px);
+      color:var(--ink);
     }
 
     .subtitle{
-      margin: 0 0 14px;
       text-align:center;
-      color: var(--muted);
-      font-weight: 700;
-      line-height:1.25;
-      font-size: 15.5px;
-    }
-
-    /* bloque principal: gif arriba, botones abajo */
-    .main{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-      align-items:center;
+      margin-bottom:14px;
+      font-weight:700;
+      color:var(--muted);
     }
 
     .gif{
-      position:relative;
-      border-radius: 22px;
-      overflow:hidden;
-      border: 2px solid rgba(255,77,109,.18);
-      background: rgba(255,255,255,.5);
-      box-shadow: 0 18px 50px rgba(255,77,109,.10);
+      padding:14px;
+      background:#fff8fc;
+      border-radius:22px;
+      border:2px solid rgba(255,77,109,.18);
+      box-shadow:0 18px 50px rgba(255,77,109,.12);
     }
 
+    /* 🔥 AJUSTE CLAVE: GIF COMPLETO */
     .gif img{
       width:100%;
-      height: min(44vh, 360px);
+      height:auto;
+      max-height:360px;
+      object-fit:contain;
       display:block;
-      object-fit: cover;
-      background:#fff;
-    }
-
-    .gif::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      pointer-events:none;
-      background:
-        radial-gradient(400px 180px at 30% 20%, rgba(255,255,255,.55), transparent 60%),
-        radial-gradient(260px 120px at 70% 30%, rgba(255,77,109,.14), transparent 70%);
-      mix-blend-mode: soft-light;
+      margin:auto;
+      background:transparent;
     }
 
     .note{
-      margin: 0;
       text-align:center;
-      color: var(--muted);
-      font-weight: 700;
-      font-size: 13.5px;
-      padding-top: 2px;
+      font-size:13.5px;
+      margin-top:8px;
+      color:var(--muted);
+      font-weight:700;
     }
 
     .arena{
+      margin-top:16px;
       position:relative;
-      min-height: 150px;
+      min-height:140px;
       display:grid;
       place-items:center;
-      padding: 6px 0 0;
     }
 
     .controls{
-      width:min(520px, 92%);
       display:flex;
       gap:14px;
-      align-items:center;
-      justify-content:center;
-      flex-wrap:wrap;
-      padding: 4px;
       position:relative;
     }
 
-    /* flechita cute apuntando al YES */
     .arrow{
       position:absolute;
-      left: 6px;
-      top: -34px;
+      left:-10px;
+      top:-34px;
       font-weight:900;
-      color: rgba(231,54,87,.85);
-      transform: rotate(-8deg);
-      user-select:none;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      filter: drop-shadow(0 10px 18px rgba(255,77,109,.12));
-    }
-    .arrow .curv{
-      font-size: 34px;
-      line-height: 1;
-    }
-    .arrow .txt{
-      font-size: 13.5px;
-      background: rgba(255,255,255,.65);
-      border: 2px dashed rgba(255,77,109,.28);
-      padding: 6px 10px;
-      border-radius: 999px;
+      color:#e73657;
+      font-size:14px;
     }
 
     button{
+      padding:12px 18px;
+      border-radius:16px;
       border:none;
+      font-weight:900;
       cursor:pointer;
-      padding: 12px 18px;
-      border-radius: 16px;
-      font-weight: 900;
-      letter-spacing:.2px;
-      transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-      user-select:none;
-      touch-action: manipulation;
-      box-shadow: 0 14px 40px rgba(0,0,0,.12);
-      min-width: 160px;
-      font-size: 16px;
+      min-width:150px;
+      font-size:16px;
+      box-shadow:0 14px 40px rgba(0,0,0,.12);
     }
 
     #yesBtn{
-      background: linear-gradient(180deg, var(--yes), var(--yes2));
-      color: var(--btnText);
-      border: 2px dashed rgba(20,10,20,.18);
+      background:linear-gradient(180deg,var(--yes),var(--yes2));
+      color:var(--btnText);
+      border:2px dashed rgba(0,0,0,.15);
     }
 
     #noBtn{
-      background: linear-gradient(180deg, var(--no), var(--no2));
-      color: #2a0c16;
-      border: 2px dashed rgba(20,10,20,.12);
-      position:relative;
-    }
-
-    button:hover{filter:brightness(1.03)}
-    button:active{transform: translateY(2px) scale(.99)}
-
-    /* el NO empieza cerca del YES y luego huye */
-    .floating-no{
+      background:linear-gradient(180deg,var(--no),var(--no2));
+      color:#2a0c16;
+      border:2px dashed rgba(0,0,0,.12);
       position:absolute;
-      left: 66%;
-      top: 58%;
-      transform: translate(-50%, -50%);
+      left:65%;
+      top:55%;
+      transform:translate(-50%,-50%);
     }
 
     .triesline{
-      margin-top: 8px;
       text-align:center;
-      font-size: 13.5px;
-      color: var(--muted);
+      margin-top:10px;
+      font-size:13.5px;
       font-weight:800;
+      color:var(--muted);
     }
 
-    .triesline b{color: var(--ink)}
-    #hint{ color: var(--muted) }
-
-    /* Modal estilo “pantalla roja” como inspiración */
     .modal{
       position:fixed;
       inset:0;
-      background: rgba(20,5,14,.45);
+      background:rgba(20,5,14,.45);
       display:none;
       place-items:center;
-      padding:18px;
-      z-index:30;
+      z-index:10;
     }
+
     .modal.show{display:grid}
 
     .modal .box{
-      width:min(560px, 94vw);
-      border-radius: 22px;
-      padding: 18px;
-      color: #fff;
-      border: 2px solid rgba(255,255,255,.18);
-      box-shadow: 0 22px 80px rgba(0,0,0,.35);
-      position:relative;
-      overflow:hidden;
-      background:
-        radial-gradient(900px 380px at 30% 10%, rgba(255,255,255,.12), transparent 60%),
-        radial-gradient(700px 320px at 90% 40%, rgba(255,255,255,.10), transparent 60%),
-        linear-gradient(180deg, #ff4d6d, #d81e46);
-    }
-
-    .modal .hearts{
-      position:absolute;
-      inset:-20px;
-      opacity:.45;
-      pointer-events:none;
-      background:
-        radial-gradient(circle at 10% 25%, rgba(255,255,255,.22) 0 16px, transparent 17px),
-        radial-gradient(circle at 32% 60%, rgba(255,255,255,.18) 0 12px, transparent 13px),
-        radial-gradient(circle at 74% 35%, rgba(255,255,255,.18) 0 14px, transparent 15px),
-        radial-gradient(circle at 85% 70%, rgba(255,255,255,.14) 0 18px, transparent 19px);
-    }
-
-    .modal h2{
-      margin: 0 0 6px;
-      font-size: 30px;
-      letter-spacing:.2px;
+      background:linear-gradient(180deg,#ff4d6d,#d81e46);
+      padding:18px;
+      border-radius:22px;
+      width:min(560px,94vw);
+      color:#fff;
       text-align:center;
-      text-shadow: 0 14px 30px rgba(0,0,0,.18);
-      position:relative;
-      z-index:2;
-    }
-    .modal p{
-      margin: 0 0 14px;
-      color: rgba(255,255,255,.92);
-      text-align:center;
-      font-weight:800;
-      position:relative;
-      z-index:2;
+      box-shadow:0 22px 80px rgba(0,0,0,.35);
     }
 
-    .modal .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      position:relative;
-      z-index:2;
-    }
-
-    .modal a, .modal button{
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+    .modal a,.modal button{
+      margin-top:10px;
       padding:12px 14px;
       border-radius:14px;
-      font-weight: 900;
-      border: 2px dashed rgba(255,255,255,.35);
-      box-shadow:none;
-      min-width: 160px;
+      font-weight:900;
+      border:none;
+      cursor:pointer;
+      min-width:160px;
     }
 
-    .modal .close{
-      background: rgba(255,255,255,.16);
-      color: #fff;
-    }
-
-    .modal .share{
-      background: rgba(255,255,255,.90);
+    .share{
+      background:#fff;
       color:#2a0614;
-      border-color: rgba(255,255,255,.55);
     }
 
-    /* confetti */
+    .close{
+      background:rgba(255,255,255,.18);
+      color:#fff;
+    }
+
     .confetti{
       position:fixed;
       inset:0;
       pointer-events:none;
-      overflow:hidden;
-      z-index:40;
-    }
-    .confetti i{
-      position:absolute;
-      top:-12px;
-      width:10px; height:14px;
-      opacity:.95;
-      border-radius:4px;
-      animation: fall linear forwards;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.10));
-    }
-    @keyframes fall{
-      to { transform: translateY(110vh) rotate(720deg); opacity: 1; }
     }
 
-    /* móvil: todo más cómodo */
-    @media (max-width: 520px){
-      .card{padding:16px}
-      .gif img{height: 300px}
-      button{min-width: 140px}
-      .arrow{left: 0; top: -36px}
+    .confetti i{
+      position:absolute;
+      top:-10px;
+      width:10px;
+      height:14px;
+      border-radius:4px;
+      animation:fall linear forwards;
+    }
+
+    @keyframes fall{
+      to{transform:translateY(110vh) rotate(720deg)}
     }
   </style>
 </head>
 
 <body>
-  <div class="bg-hearts"></div>
+  <section class="card">
+    <div class="topbar">
+      <span class="tag">💌 Valentine Mode: <b>ON</b></span>
+      <span>💗 💘 💞</span>
+    </div>
 
-  <div class="wrap">
-    <section class="card">
-      <div class="topbar">
-        <span class="tag">💌 Valentine Mode: <b id="mode">ON</b></span>
-        <div class="mini-hearts" aria-hidden="true">
-          <span>💗</span><span>💘</span><span>💞</span>
-        </div>
+    <h1>Will you be my Valentine? 💘</h1>
+    <p class="subtitle" id="subtitle">Di que no pa que tu vea… El "no" esta dañado."</p>
+
+    <div class="gif">
+      <img src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyeHlrMmUweGo1ajV2cDgzdGNxYWV2Z2w1a2M5aGN3bjNqcG5haDl6bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vDhDcIEmShbUI/giphy.gif" alt="gif">
+    </div>
+
+    <p class="note">No sea paloma, piensa bien pa que no tengamos problemas (es amenaza)</p>
+
+    <div class="arena" id="arena">
+      <div class="controls">
+        <div class="arrow">↶ dale aquí 😭</div>
+        <button id="yesBtn">Sí 💖</button>
+        <button id="noBtn">No 😐</button>
       </div>
+    </div>
 
-      <h1>Will you be my Valentine? 💘</h1>
+    <p class="triesline">
+      Intentos de “No”: <b id="tries">0</b> ·
+      <span id="hint">Dale a “Sí” y deja el coro 😭</span>
+    </p>
+  </section>
 
-      <!-- ✅ TEXTO TUYO (NO TOCADO) -->
-      <p class="subtitle" id="subtitle">Di que no pa que tu vea… El "no" esta dañado."</p>
-
-      <div class="main">
-        <div class="gif">
-          <!-- ✅ tu gif -->
-          <img id="memeGif"
-               src="https://media3.giphy.com/media/v1.Y2lkPTZjMDliOTUyeHlrMmUweGo1ajV2cDgzdGNxYWV2Z2w1a2M5aGN3bjNqcG5haDl6bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vDhDcIEmShbUI/giphy.gif"
-               alt="Meme gif" />
-        </div>
-
-        <div class="arena" id="arena">
-          <div class="controls">
-            <div class="arrow" aria-hidden="true">
-              <span class="curv">↶</span>
-              <span class="txt">dale aquí 😭</span>
-            </div>
-
-            <button id="yesBtn">Sí 💖</button>
-            <button id="noBtn" class="floating-no">No 😐</button>
-          </div>
-        </div>
-
-        <p class="triesline">
-          Intentos de “No”: <b id="tries">0</b> ·
-          <!-- ✅ TEXTO TUYO (NO TOCADO) -->
-          <span id="hint">Dale a “Sí” y deja el coro 😭</span>
-        </p>
-      </div>
-    </section>
-  </div>
-
-  <!-- Modal de éxito -->
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal" id="modal">
     <div class="box">
-      <div class="hearts"></div>
-      <h2 id="mTitle">YESSS! 🥳💘</h2>
-      <p id="successText">Ok, ya somos oficialmente San Valentín. (No acepto devoluciones 😌)</p>
-      <div class="row">
-        <a class="share" id="shareLink" href="#" target="_blank" rel="noopener">📩 Compartir</a>
-        <button class="close" id="closeModal">Cerrar</button>
-      </div>
+      <h2>VAAAAAAAAMOOOOOOOOOOOOOOOOOOOOOOOOO 🥳💘</h2>
+      <p>Ok, ya somos oficialmente San Valentín. (No acepto devoluciones 😌)</p>
+      <a class="share" id="shareLink" target="_blank">📩 Compartir</a><br>
+      <button class="close" id="closeModal">Cerrar</button>
     </div>
   </div>
 
   <div class="confetti" id="confetti"></div>
 
   <script>
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn  = document.getElementById("noBtn");
-    const arena  = document.getElementById("arena");
-    const subtitle = document.getElementById("subtitle");
-    const triesEl = document.getElementById("tries");
-    const hint = document.getElementById("hint");
+    const yesBtn=document.getElementById("yesBtn");
+    const noBtn=document.getElementById("noBtn");
+    const arena=document.getElementById("arena");
+    const subtitle=document.getElementById("subtitle");
+    const triesEl=document.getElementById("tries");
+    const hint=document.getElementById("hint");
+    const modal=document.getElementById("modal");
+    const closeModal=document.getElementById("closeModal");
+    const shareLink=document.getElementById("shareLink");
 
-    const modal = document.getElementById("modal");
-    const closeModal = document.getElementById("closeModal");
-    const shareLink = document.getElementById("shareLink");
-
-    let tries = 0;
-
-    // ✅ Tus frases (NO TOCADAS)
-    const phrases = [
-      "¿Segura? 🥺",
+    let tries=0;
+    const phrases=[
+      "¿Segura? -.-",
       "Piénsalo otra vez… 😭",
-      "Ese “No” se ve sospechoso 👀",
+      "Ese “No” se ve sospechoso",
       "El botón “Sí” se siente solo 💔",
-      "Dale a “Sí” y te compro un helado 🍦 (mentira… o no)",
+      "Dale a “Sí” y te compro un helado",
       "Ok ya… se acabó el coro. DALE SÍ COÑO😤💘"
     ];
 
-    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+    function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
 
-    function moveNoButton() {
+    function moveNo(){
       tries++;
-      triesEl.textContent = tries;
+      triesEl.textContent=tries;
+      subtitle.textContent=phrases[Math.min(tries-1,phrases.length-1)];
 
-      // Cambia texto gracioso
-      subtitle.textContent = phrases[Math.min(tries - 1, phrases.length - 1)];
+      const rect=arena.getBoundingClientRect();
+      const btn=noBtn.getBoundingClientRect();
+      const x=Math.random()*(rect.width-btn.width);
+      const y=Math.random()*(rect.height-btn.height);
+      noBtn.style.left=x+btn.width/2+"px";
+      noBtn.style.top=y+btn.height/2+"px";
 
-      // Hace que el botón Sí crezca con cada intento
-      const grow = clamp(1 + tries * 0.07, 1, 1.55);
-      yesBtn.style.transform = `scale(${grow})`;
+      yesBtn.style.transform=`scale(${clamp(1+tries*0.07,1,1.55)})`;
+      noBtn.style.transform=`translate(-50%,-50%) scale(${clamp(1-tries*0.06,.55,1)})`;
 
-      // Hace que el NO se encoja un poco
-      const shrink = clamp(1 - tries * 0.06, 0.55, 1);
-      noBtn.style.transform = `translate(-50%, -50%) scale(${shrink})`;
-
-      // Mueve el NO a un lugar random dentro del área visible del "arena"
-      const rect = arena.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-
-      const padding = 12;
-      const minX = padding;
-      const maxX = rect.width - btnRect.width - padding;
-      const minY = padding;
-      const maxY = rect.height - btnRect.height - padding;
-
-      const x = Math.random() * (maxX - minX) + minX;
-      const y = Math.random() * (maxY - minY) + minY;
-
-      noBtn.style.left = `${x + btnRect.width / 2}px`;
-      noBtn.style.top  = `${y + btnRect.height / 2}px`;
-
-      hint.textContent = tries >= 4
-        ? "Bro… el universo quiere que sea SÍ 😂"
-        : "Intenta otra vez (si puedes 😈)";
+      hint.textContent=tries>=4
+        ?"compai… el universo quiere que sea SÍ"
+        :"Intenta otra vez paloma (si puedes)";
     }
 
-    function blastConfetti() {
-      const holder = document.getElementById("confetti");
-      holder.innerHTML = "";
-      const pieces = 90;
-
-      for (let i = 0; i < pieces; i++){
-        const c = document.createElement("i");
-        const left = Math.random() * 100;
-        const delay = Math.random() * 0.25;
-        const dur = 1.8 + Math.random() * 1.6;
-        const sizeW = 6 + Math.random() * 10;
-        const sizeH = 8 + Math.random() * 14;
-
-        c.style.left = left + "vw";
-        c.style.width = sizeW + "px";
-        c.style.height = sizeH + "px";
-        c.style.animationDelay = delay + "s";
-        c.style.animationDuration = dur + "s";
-
-        const hue = Math.floor(Math.random() * 360);
-        c.style.background = `hsl(${hue} 90% 60%)`;
-
-        holder.appendChild(c);
+    function confetti(){
+      const h=document.getElementById("confetti");
+      h.innerHTML="";
+      for(let i=0;i<90;i++){
+        const c=document.createElement("i");
+        c.style.left=Math.random()*100+"vw";
+        c.style.width=6+Math.random()*10+"px";
+        c.style.height=8+Math.random()*14+"px";
+        c.style.background=`hsl(${Math.random()*360} 90% 60%)`;
+        c.style.animationDuration=1.8+Math.random()*1.6+"s";
+        h.appendChild(c);
       }
-
-      setTimeout(() => { holder.innerHTML = ""; }, 3500);
+      setTimeout(()=>h.innerHTML="",3500);
     }
 
-    function openModal() {
-      const url = window.location.href;
-      const msg = encodeURIComponent("Mira esto 😭💘\n" + url);
-      shareLink.href = `https://wa.me/?text=${msg}`;
-
+    yesBtn.onclick=()=>{
+      const url=location.href;
+      shareLink.href=`https://wa.me/?text=${encodeURIComponent("Mira esto 😭💘\n"+url)}`;
       modal.classList.add("show");
-      blastConfetti();
-    }
+      confetti();
+    };
 
-    // NO huye en hover, click y touch (móvil)
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      moveNoButton();
-    });
-    noBtn.addEventListener("touchstart", (e) => {
-      e.preventDefault();
-      moveNoButton();
-    }, { passive: false });
+    closeModal.onclick=()=>modal.classList.remove("show");
+    modal.onclick=e=>e.target===modal&&modal.classList.remove("show");
 
-    // Sí = éxito
-    yesBtn.addEventListener("click", () => {
-      openModal();
-    });
-
-    closeModal.addEventListener("click", () => {
-      modal.classList.remove("show");
-    });
-
-    // cerrar tocando fuera
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) modal.classList.remove("show");
-    });
+    noBtn.onmouseenter=moveNo;
+    noBtn.onclick=e=>{e.preventDefault();moveNo();}
+    noBtn.ontouchstart=e=>{e.preventDefault();moveNo();}
   </script>
 </body>
 </html>
